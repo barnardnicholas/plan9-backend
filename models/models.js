@@ -1,7 +1,13 @@
 const fs = require("fs");
 const path = require("path");
 const Twit = require("twit");
-const { twitterConfig } = require("../auth/twitter-config.js");
+// const { twitterConfig } = require("../auth/twitter-config.js");
+const twitterConfig = {
+  consumer_key: process.env.TWITTER_CONSUMER_KEY,
+  consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+  access_token: process.env.TWITTER_ACCESS_TOKEN,
+  access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
+};
 
 // Import Firebase
 const firebase = require("firebase");
@@ -17,6 +23,27 @@ firebase.initializeApp(firebaseConfig);
 const twitterInstance = new Twit(twitterConfig);
 
 const sendTweet = (cb, status) => {
+  console.log("reached model");
+  twitterInstance.post(
+    "statuses/update",
+    { status: status },
+    (err, data, response) => {
+      if (err) {
+        console.log(`ERROR: Failed to post "${status}"`);
+        console.dir(err);
+        // console.log(data);
+        cb(err);
+      } else {
+        console.log(`Successfully posted "${status}"`);
+        // console.log("RESPONSE: ", response);
+        // console.log(data);
+        cb(null, response);
+      }
+    }
+  );
+};
+
+const tweetImage = (cb, options) => {
   console.log("reached model");
   twitterInstance.post(
     "statuses/update",
@@ -176,4 +203,5 @@ module.exports = {
   // fetchPetById,
   // fetchPetsByOwnerId
   sendTweet,
+  tweetImage,
 };
