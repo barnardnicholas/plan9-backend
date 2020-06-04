@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const Twit = require("twit");
+const download = require("image-downloader");
 // const { twitterConfig } = require("../auth/twitter-config.js");
 const twitterConfig = {
   consumer_key: process.env.TWITTER_CONSUMER_KEY,
@@ -45,23 +46,20 @@ const sendTweet = (cb, status) => {
 
 const tweetImage = (cb, options) => {
   console.log("reached model");
-  twitterInstance.post(
-    "statuses/update",
-    { status: status },
-    (err, data, response) => {
-      if (err) {
-        console.log(`ERROR: Failed to post "${status}"`);
-        console.dir(err);
-        // console.log(data);
-        cb(err);
-      } else {
-        console.log(`Successfully posted "${status}"`);
-        // console.log("RESPONSE: ", response);
-        // console.log(data);
-        cb(null, response);
-      }
-    }
-  );
+  // TODO - Assemble tweet code from base64test
+};
+
+const testFS = (cb) => {
+  const options = {
+    url:
+      "https://vignette.wikia.nocookie.net/simpsons/images/f/fc/T-McClure.png",
+    dest: "./troy.png",
+  };
+  download.image(options).then((res) => {
+    console.log("Saved image to", res.filename);
+    console.dir(res);
+    cb(res);
+  });
 };
 
 // const sendTweet = cb => {
@@ -204,4 +202,5 @@ module.exports = {
   // fetchPetsByOwnerId
   sendTweet,
   tweetImage,
+  testFS,
 };

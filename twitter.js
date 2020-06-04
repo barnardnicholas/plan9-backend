@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const Twit = require("twit");
-const { twitterConfig } = require("../auth/twitter-config.js");
+// const { twitterConfig } = require("../auth/twitter-config.js");
 const {
   parse,
   stringify,
