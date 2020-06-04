@@ -44,7 +44,7 @@ const sendTweet = (cb, status) => {
   );
 };
 
-const tweetImage = (cb, options) => {
+const tweetImage = (cb) => {
   const options = {
     url:
       "https://vignette.wikia.nocookie.net/simpsons/images/f/fc/T-McClure.png",
