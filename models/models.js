@@ -10,11 +10,6 @@ const twitterConfig = {
   access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
 };
 
-const options = {
-  url: "https://vignette.wikia.nocookie.net/simpsons/images/f/fc/T-McClure.png",
-  dest: "./troy.png",
-};
-
 // Import Firebase
 // const firebase = require("firebase");
 
@@ -50,6 +45,11 @@ const sendTweet = (cb, status) => {
 };
 
 const tweetImage = (cb, options) => {
+  const options = {
+    url:
+      "https://vignette.wikia.nocookie.net/simpsons/images/f/fc/T-McClure.png",
+    dest: "./troy.png",
+  };
   console.log("reached model");
   // TODO - Assemble tweet code from base64test
   console.log("Starting postTestImage...");
@@ -113,6 +113,11 @@ const tweetImage = (cb, options) => {
 };
 
 const testFS = (cb) => {
+  const options = {
+    url:
+      "https://vignette.wikia.nocookie.net/simpsons/images/f/fc/T-McClure.png",
+    dest: "./troy.png",
+  };
   download.image(options).then((res) => {
     console.log("Saved image to", res.filename);
     console.dir(res);
