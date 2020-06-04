@@ -64,7 +64,7 @@ const testFS = (cb) => {
         cb(err);
       } else {
         console.log("image " + options.dest + " was deleted");
-        cb(res);
+        cb({ status: "image " + options.dest + " was deleted" });
       }
     });
   });
