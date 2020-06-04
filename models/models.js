@@ -58,7 +58,15 @@ const testFS = (cb) => {
   download.image(options).then((res) => {
     console.log("Saved image to", res.filename);
     console.dir(res);
-    cb(res);
+    fs.unlink(options.dest, (err) => {
+      if (err) {
+        console.log("ERROR: unable to delete image " + options.dest);
+        cb(err);
+      } else {
+        console.log("image " + options.dest + " was deleted");
+        cb(res);
+      }
+    });
   });
 };
 
