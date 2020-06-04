@@ -10,6 +10,11 @@ const twitterConfig = {
   access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
 };
 
+const options = {
+  url: "https://vignette.wikia.nocookie.net/simpsons/images/f/fc/T-McClure.png",
+  dest: "./troy.png",
+};
+
 // Import Firebase
 // const firebase = require("firebase");
 
@@ -47,14 +52,67 @@ const sendTweet = (cb, status) => {
 const tweetImage = (cb, options) => {
   console.log("reached model");
   // TODO - Assemble tweet code from base64test
+  console.log("Starting postTestImage...");
+  console.log(`Downloading image from ${options.url}`);
+  download
+    .image(options)
+    .then(({ filename }) => {
+      console.log("Saved image to", filename);
+      const b64content = fs.readFileSync(options.dest, {
+        encoding: "base64",
+      });
+      console.log(`Encoded ${filename} to base64`);
+      console.log("Starting Twitter upload...");
+      twitterInstance.post(
+        "media/upload",
+        { media_data: b64content },
+        (err, data, response) => {
+          if (err) {
+            console.log("ERROR:");
+            console.log(err);
+          } else {
+            console.log("Image uploaded");
+            console.log("Starting Twitter post...");
+
+            twitterInstance.post(
+              "statuses/update",
+              {
+                media_ids: new Array(data.media_id_string),
+                status: "Test Troy",
+              },
+              (err, data, response) => {
+                if (err) {
+                  console.log("ERROR:");
+                  console.log(err);
+                } else {
+                  console.log("Image posted successfully");
+                  // console.dir(data);
+                  console.log("Deleting Image...");
+                  fs.unlink(options.dest, (err) => {
+                    if (err) {
+                      console.log(
+                        "ERROR: unable to delete image " + options.dest
+                      );
+                      cb({
+                        error: "ERROR: unable to delete image " + options.dest,
+                      });
+                    } else {
+                      console.log("image " + options.dest + " was deleted");
+                      cb({ status: "image " + options.dest + " was deleted" });
+                    }
+                  });
+                }
+              }
+            );
+          }
+        }
+      );
+    })
+    .catch((err) => console.error(err));
+  console.log("End of postTestImage");
 };
 
 const testFS = (cb) => {
-  const options = {
-    url:
-      "https://vignette.wikia.nocookie.net/simpsons/images/f/fc/T-McClure.png",
-    dest: "./troy.png",
-  };
   download.image(options).then((res) => {
     console.log("Saved image to", res.filename);
     console.dir(res);
