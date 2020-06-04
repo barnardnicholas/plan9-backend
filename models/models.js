@@ -10,14 +10,14 @@ const twitterConfig = {
 };
 
 // Import Firebase
-const firebase = require("firebase");
+// const firebase = require("firebase");
 
 // Auth variables
-const { firebaseConfig } = require("../auth/firebase-auth");
+// const { firebaseConfig } = require("../auth/firebase-auth");
 // import * as auth from "../env_variables/env";
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+// firebase.initializeApp(firebaseConfig);
 
 // Initialize Twitter
 const twitterInstance = new Twit(twitterConfig);
